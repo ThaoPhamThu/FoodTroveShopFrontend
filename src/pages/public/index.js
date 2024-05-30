@@ -1,0 +1,9 @@
+export { default as Home } from './home';
+export { default as Public } from './public';
+export { default as Login } from './login';
+export { default as Products } from './products';
+export { default as Blogs } from './blogs';
+export { default as DetailProduct } from './detailProduct';
+export { default as FQA } from './fqas';
+export { default as Services } from './services';
+export { default as Register } from './register';

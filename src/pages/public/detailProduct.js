@@ -1,0 +1,171 @@
+import React, { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { apiGetDetailProduct, apiGetProducts } from '../../apis/product';
+import { BreadCrumb, Button, SelectQuantity, ProductExtraInfoItem, ProductInfo, CustomSlider } from '../../components';
+import Slider from "react-slick";
+import { formatMoney, renderStarFromNumber } from '../../ultils/helper';
+import { productExtraInfo } from '../../ultils/constants'
+
+const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+};
+
+const DetailProduct = () => {
+    const { pid, titleProduct, category } = useParams();
+    const [product, setProduct] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    const [relatedProduct, setRelatedProduct] = useState(null);
+    const [currentImage, setCurrentImage] = useState(null);
+    const [update, setUpdate] = useState(false)
+
+
+    const fetchProductData = async () => {
+        const response = await apiGetDetailProduct(pid);
+        if (response.success) {
+            setProduct(response?.product)
+            setCurrentImage(response.product?.imagesProduct[0])
+        }
+    };
+
+    const fetchProducts = async () => {
+        const response = await apiGetProducts({ category })
+        if (response.success) setRelatedProduct(response.products)
+    }
+    useEffect(() => {
+        if (pid) {
+            fetchProductData();
+            fetchProducts();
+        }
+        window.scrollTo(0, 0)
+    }, [pid]);
+
+    useEffect(() => {
+        if (pid) {
+            fetchProductData();
+        }
+    }, [update]);
+
+    const rerender = useCallback(() => {
+        setUpdate(!update)
+    }, [update])
+    const handleQuantity = useCallback((number) => {
+        if (!Number(number) || Number(number) < 1) {
+            return
+        } else setQuantity(number);
+    }, [quantity]);
+
+    const handleChangeQuantity = useCallback((flag) => {
+        if (flag === 'minus' && quantity === 1) return
+        if (flag === 'minus') setQuantity(prev => +prev - 1);
+        if (flag === 'plus') setQuantity(prev => +prev + 1);
+    }, [quantity]);
+
+    const handleClickImage = (e, el) => {
+        e.stopPropagation()
+        setCurrentImage(el)
+    }
+    return (
+        <div className="w-full">
+            <div className="h-[81px] bg-gray-100 flex justify-center items-center">
+                <div className="w-main">
+                    <BreadCrumb titleProduct={titleProduct} category={category} />
+                </div>
+            </div>
+            <div className="w-main m-auto mt-4 flex ">
+                <div className="w-2/5 flex flex-col gap-4">
+                    <img src={currentImage} alt="product" className="h-[458px] w-[458px] object-cover border" />
+                    <div className="w-[458px]">
+                        <Slider className="image-slider" {...settings}>
+                            {product?.imagesProduct?.map(el => (
+                                <div className="px-2" key={el}>
+                                    <img onClick={e => handleClickImage(e, el)} src={el} alt="sub-product" className="h-[143px] w-[143px] object-cover border cursor-pointer" />
+                                </div>
+                            ))}
+                        </Slider>
+                    </div>
+                </div>
+                <div className="w-2/5">
+                    <div className="border-b">
+                        <h3 className="uppercase font-semibold mb-2 text-[22px]">{titleProduct}</h3>
+                        <p className="text-[#7A7A7A] mb-4">{product?.descriptionProduct}</p>
+                    </div>
+
+                    <div className="flex flex-col items-center mt-6 mb-4 gap-1">
+                        <div className="flex items-center mt-6 gap-1">
+                            {renderStarFromNumber(product?.ratingsProduct)?.map((el, index) => (<span key={index}>{el}</span>))}
+                            <span className="text-[13px] text-gray-400">{`(${formatMoney(product?.numOfReviews)} reviews)`}</span>
+                        </div>
+                        <div className="mb-4">
+                            <span className="italic text-main text-sm">{`(Sold: ${formatMoney(product?.productSold)})`}</span>
+                        </div>
+
+                    </div>
+
+                    <div className="flex mt-2 mb-4 items-center">
+                        {product?.saleProduct
+                            ? <div className="flex gap-4 items-center">
+                                <h2 className="text-[25px] font-semibold text-main">{`${formatMoney(product?.finalprice)} VNĐ`}</h2>
+                                <del className="text-[20px]">{`${formatMoney(product?.price)} VNĐ`}</del>
+                            </div>
+                            : <h2 className="text-[25px] font-semibold text-main">{`${formatMoney(product?.price)} VNĐ`}</h2>
+                        }
+                    </div>
+
+                    <div className="flex">
+                        <p className="font-medium">Brand</p>
+                        <p className="ml-[29px] mr-2">:</p>
+                        <p className="text-gray-500">{product?.brandProduct}</p>
+                    </div>
+
+                    <div className="flex mt-2">
+                        <p className="font-medium">Weight</p>
+                        <p className="ml-5 mr-2">:</p>
+                        <p className="text-gray-500">{product?.weightProduct}</p>
+                    </div>
+
+                    <div className="flex mt-2">
+                        <p className="font-medium">Items</p>
+                        <p className="ml-[31px] mr-2">:</p>
+                        <p className="text-gray-500">1</p>
+                    </div>
+
+                    <div className="flex mt-2 text-orange-400">
+                        <p className="font-medium">Stock</p>
+                        <p className="ml-8 mr-2">:</p>
+                        <p>{`${product?.stock} products`}</p>
+                    </div>
+
+                    <div className="flex flex-col mt-8 gap-8">
+                        <div className="flex gap-4 items-center">
+                            <span className="font-medium">Quantity</span>
+                            <SelectQuantity quantity={quantity} handleQuantity={handleQuantity} handleChangeQuantity={handleChangeQuantity} />
+                        </div>
+                        <Button fw>
+                            Add to Cart
+                        </Button>
+                    </div>
+
+                </div>
+                <div className="w-1/5 mt-[120px]">
+                    {productExtraInfo.map(el => (
+                        <ProductExtraInfoItem key={el.id} title={el.title} icon={el.icon} sub={el.sub} />
+                    ))}
+                </div>
+            </div>
+            <div className="w-main m-auto mt-8 ">
+                <ProductInfo totalRatings={product?.ratingsProduct} reviews={product?.reviews} nameProduct={product?.titleProduct} productId={product?._id} rerender={rerender} />
+            </div>
+            <div className="w-main m-auto mt-8">
+                <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">OTHER CUSTOMERS ALSO BUY: </h3>
+                <CustomSlider normal={true} products={relatedProduct} />
+            </div>
+            <div className="w-full h-[100px]"></div>
+        </div>
+    )
+}
+
+export default DetailProduct

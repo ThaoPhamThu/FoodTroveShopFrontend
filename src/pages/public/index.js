@@ -7,3 +7,4 @@ export { default as DetailProduct } from './detailProduct';
 export { default as FQA } from './fqas';
 export { default as Services } from './services';
 export { default as Register } from './register';
+export { default as DetailCart } from './detailCart';

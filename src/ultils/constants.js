@@ -104,7 +104,7 @@ export const productInfoTabs = [
     },
 ]
 
-export const brands = ["Ogari", "NestFood", "Vinasnack", "Vinagarden", "VinaFood", "Nestle", "VinaBakery", "VinaMeat", "FoodTrove"]
+export const brands = ["Ogari", "NestFood", "Vinagarden", "Nestle", "FoodTrove"]
 
 export const sorts = [
     {
@@ -208,4 +208,80 @@ export const adminSidebar = [
         icon: <RiBillLine size={20} />
     },
 
+]
+
+export const memberSidebar = [
+    {
+        id: 1,
+        type: 'SINGLE',
+        text: 'Information',
+        path: `/${path.MEMBER}/${path.PERSONAL}`,
+        icon: <AiOutlineDashboard size={20} />
+    },
+    {
+        id: 2,
+        type: 'SINGLE',
+        text: 'My cart',
+        path: `/${path.MEMBER}/${path.MY_CART}`,
+        icon: <MdGroups size={20} />
+    },
+    {
+        id: 3,
+        type: 'SINGLE',
+        text: 'Order histories',
+        path: `/${path.MEMBER}/${path.HISTORY}`,
+        icon: <RiBillLine size={20} />
+    },
+    {
+        id: 4,
+        type: 'SINGLE',
+        text: 'Wishlist',
+        path: `/${path.MEMBER}/${path.WISHLIST}`,
+        icon: <RiBillLine size={20} />
+    },
+
+]
+export const roles = [
+    {
+        code: 'admin',
+        value: 'Amin'
+    },
+    {
+        code: 'user',
+        value: 'User'
+    }
+]
+
+export const blockStatus = [
+    {
+        code: true,
+        value: 'Blocked'
+    },
+    {
+        code: false,
+        value: 'Active'
+    }
+]
+
+export const brandsProduct = [
+    {
+        code: "Ogari",
+        value: "Ogari",
+    },
+    {
+        code: "NestFood",
+        value: "NestFood",
+    },
+    {
+        code: "Nestle",
+        value: "Nestle",
+    },
+    {
+        code: "FoodTrove",
+        value: "FoodTrove",
+    },
+    {
+        code: "Vinagarden",
+        value: "Vinagarden",
+    }
 ]

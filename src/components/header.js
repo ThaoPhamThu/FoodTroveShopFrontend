@@ -1,13 +1,27 @@
-import React, { Fragment, memo } from "react";
+import React, { Fragment, memo, useEffect, useState } from "react";
 import logo from '../assets/logo.jpg';
 import icons from '../ultils/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import path from '../ultils/path';
 import { useSelector } from "react-redux";
 
-const { RiPhoneFill, MdEmail, PiHandbagSimpleFill, RiUserHeartLine } = icons
+const { RiPhoneFill, MdEmail, PiHandbagSimpleFill, FaUserAlt } = icons
 const Header = () => {
     const { current } = useSelector(state => state.user)
+    const [isShowOption, setIsShowOption] = useState(false)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const handleClickOut = (e) => {
+            const profile = document.getElementById('profile')
+            if (!profile?.contains(e.target)) setIsShowOption(false)
+        }
+        document.addEventListener('click', handleClickOut)
+
+        return () => {
+            document.removeEventListener('click', handleClickOut)
+        }
+    }, [])
     return (
         <div className="flex justify-between w-main h-[110px] py-[35px]">
             <Link to={`/${path.HOME}`}>
@@ -29,16 +43,33 @@ const Header = () => {
                     <span>Online Support 24/7</span>
                 </div>
                 {current && <Fragment>
-                    <div className="cursor-pointer flex flex-col items-center px-6 border-r gap-2">
+                    <div onClick={() => navigate(`/${path.DETAIL_CART}`)} className="cursor-pointer flex flex-col items-center px-6 border-r gap-2">
                         <PiHandbagSimpleFill color="red" />
-                        <span>0 item(s)</span>
+                        <span>{`${current?.cart?.length || 0} item(s)`}</span>
                     </div>
-                    <Link
-                        className="cursor-pointer flex flex-col items-center justify-center pl-6 gap-2"
-                        to={current?.role === 'admin' ? `/${path.ADMIN}/${path.DASHBOARD}` : `/${path.MEMBER}/${path.PERSONAL}`}>
-                        <RiUserHeartLine color="red" />
+                    {current.role === 'user' && <Link className="flex flex-col cursor-pointer items-center justify-center px-6 gap-2"
+                        to={`/${path.MEMBER}/${path.PERSONAL}`}>
+                        <FaUserAlt color="red" />
                         <span>Profile</span>
-                    </Link>
+                    </Link>}
+                    {current.role === 'admin' && <div
+                        className="cursor-pointer flex flex-col items-center justify-center pl-6 gap-2 relative"
+                        onClick={() => setIsShowOption(prev => !prev)}
+                        id="profile">
+                        <FaUserAlt color="red" />
+                        <span>Profile</span>
+
+                        {isShowOption && <div onClick={(e) => e.stopPropagation()} className="absolute top-full flex flex-col left-[16px] min-w-[150px] bg-gray-100 border py-2">
+                            <Link
+                                className="p-2 w-full hover:bg-sky-100"
+                                to={`/${path.MEMBER}/${path.PERSONAL}`}>Personal
+                            </Link>
+                            <Link
+                                className="p-2 w-full hover:bg-sky-100"
+                                to={`/${path.ADMIN}/${path.DASHBOARD}`}>Admin Workspace
+                            </Link>
+                        </div>}
+                    </div>}
                 </Fragment>}
             </div>
         </div>

@@ -3,7 +3,7 @@ import { Header, Navigation, Footer, InputField, Button, Loading } from '../../c
 import logo from '../../assets/logo.jpg';
 import { apiRegister, apiLogin } from "../../apis/user";
 import Swal from 'sweetalert2';
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import path from "../../ultils/path";
 import { login } from '../../store/users/userSlice';
 import { showModal } from '../../store/app/appSlice'
@@ -21,6 +21,7 @@ const Login = () => {
     });
     const [invalidFields, setInvalidFields] = useState([]);
     const [isRegister, setIsRegister] = useState(false);
+    const [searchParams] = useSearchParams()
     const resetPayload = () => {
         setPayload({
             email: '',
@@ -55,7 +56,7 @@ const Login = () => {
                 const rs = await apiLogin(data);
                 if (rs.success) {
                     dispatch(login({ isLoggedIn: true, token: rs.token, userData: rs.user }))
-                    navigate(`${path.PUBLIC}`)
+                    searchParams.get('redirect') ? navigate(searchParams.get('redirect')) : navigate(`/${path.HOME}`)
                 } else Swal.fire('Đăng nhập thất bại, vui lòng thử lại', rs.user, 'error')
             }
         }

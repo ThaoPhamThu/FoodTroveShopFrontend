@@ -9,6 +9,8 @@ const path = {
     OUR_SERVICE: 'services',
     FAQ: 'faqs',
     DETAIL_PRODUCT__CATEGORY__PID__TITLE: ':category/:pid/:titleProduct',
+    DETAIL_CART: 'my-cart',
+    CHECKOUT: 'checkout',
 
     //Admin
     ADMIN: 'admin',
@@ -20,7 +22,10 @@ const path = {
 
     //Member
     MEMBER: 'member',
-    PERSONAL: 'personal'
+    PERSONAL: 'personal',
+    MY_CART: 'my-cart',
+    HISTORY: 'order-history',
+    WISHLIST: 'wishlist'
 }
 
 export default path;

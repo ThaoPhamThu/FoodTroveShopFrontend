@@ -1,10 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { createSearchParams, useLocation, useNavigate, useParams } from "react-router-dom";
 import { apiGetDetailProduct, apiGetProducts } from '../../apis/product';
 import { BreadCrumb, Button, SelectQuantity, ProductExtraInfoItem, ProductInfo, CustomSlider } from '../../components';
 import Slider from "react-slick";
 import { formatMoney, renderStarFromNumber } from '../../ultils/helper';
-import { productExtraInfo } from '../../ultils/constants'
+import { productExtraInfo } from '../../ultils/constants';
+import clsx from 'clsx';
+import { useDispatch, useSelector } from "react-redux";
+import { apiUpdateCart } from "../../apis";
+import { toast } from "react-toastify";
+import { getInforUser } from "../../store/users/asyncActions";
+import Swal from "sweetalert2";
+import path from "../../ultils/path";
 
 const settings = {
     dots: false,
@@ -14,14 +21,30 @@ const settings = {
     slidesToScroll: 1,
 };
 
-const DetailProduct = () => {
-    const { pid, titleProduct, category } = useParams();
+const DetailProduct = ({ isQuickView, data }) => {
+    const titleRef = useRef()
+    const params = useParams();
+    const { current } = useSelector(state => state.user)
+    const location = useLocation()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [relatedProduct, setRelatedProduct] = useState(null);
     const [currentImage, setCurrentImage] = useState(null);
     const [update, setUpdate] = useState(false)
-
+    const [pid, setPid] = useState(null)
+    const [category, setCategory] = useState(null)
+    useEffect(() => {
+        if (data) {
+            setPid(data.pid)
+            setCategory(data.category)
+        }
+        else if (params) {
+            setPid(params.pid)
+            setCategory(params.category)
+        }
+    }, [data, params]);
 
     const fetchProductData = async () => {
         const response = await apiGetDetailProduct(pid);
@@ -41,6 +64,7 @@ const DetailProduct = () => {
             fetchProducts();
         }
         window.scrollTo(0, 0)
+        titleRef.current.scrollIntoView({ block: 'center' })
     }, [pid]);
 
     useEffect(() => {
@@ -68,15 +92,38 @@ const DetailProduct = () => {
         e.stopPropagation()
         setCurrentImage(el)
     }
+
+    const handleAddCart = async () => {
+        if (!current) return Swal.fire({
+            title: 'Almost...',
+            text: 'Please login first!',
+            icon: 'info',
+            cancelButtonText: 'Not now!',
+            showCancelButton: true,
+            confirmButtonText: 'Log in!'
+        }).then((rs) => {
+            if (rs.isConfirmed) navigate({
+                pathname: `/${path.LOGIN}`,
+                search: createSearchParams({ redirect: location.pathname }).toString()
+            })
+        })
+        const response = await apiUpdateCart({ pid, quantity })
+        if (response.success) {
+            toast.success(response.mes)
+            dispatch(getInforUser())
+        }
+        else toast.error(response.mes)
+    }
     return (
         <div className="w-full">
-            <div className="h-[81px] bg-gray-100 flex justify-center items-center">
-                <div className="w-main">
-                    <BreadCrumb titleProduct={titleProduct} category={category} />
+            {!isQuickView && <div className="h-[51px] bg-main flex justify-center items-center">
+                <div ref={titleRef} className="w-main flex justify-between text-white">
+                    <h3 className="font-semibold">Product</h3>
+                    <BreadCrumb category={category} />
                 </div>
-            </div>
-            <div className="w-main m-auto mt-4 flex ">
-                <div className="w-2/5 flex flex-col gap-4">
+            </div>}
+            <div onClick={(e) => e.stopPropagation()} className={clsx("m-auto mt-4 flex bg-white", isQuickView ? 'max-w-[900px] gap-16 p-8' : 'w-main')}>
+                <div className={clsx("w-2/5 flex flex-col gap-4", isQuickView && 'w-1/2')}>
                     <img src={currentImage} alt="product" className="h-[458px] w-[458px] object-cover border" />
                     <div className="w-[458px]">
                         <Slider className="image-slider" {...settings}>
@@ -88,10 +135,10 @@ const DetailProduct = () => {
                         </Slider>
                     </div>
                 </div>
-                <div className="w-2/5">
+                <div className={clsx('w-2/5', isQuickView && 'w-1/2')}>
                     <div className="border-b">
-                        <h3 className="uppercase font-semibold mb-2 text-[22px]">{titleProduct}</h3>
-                        <p className="text-[#7A7A7A] mb-4">{product?.descriptionProduct}</p>
+                        <h3 className="uppercase font-semibold mb-2 text-[22px]">{product?.titleProduct}</h3>
+                        <p className="text-[#7A7A7A] mb-4">{product?.subTitle}</p>
                     </div>
 
                     <div className="flex flex-col items-center mt-6 mb-4 gap-1">
@@ -144,26 +191,26 @@ const DetailProduct = () => {
                             <span className="font-medium">Quantity</span>
                             <SelectQuantity quantity={quantity} handleQuantity={handleQuantity} handleChangeQuantity={handleChangeQuantity} />
                         </div>
-                        <Button fw>
+                        <Button handleOnClick={handleAddCart} fw>
                             Add to Cart
                         </Button>
                     </div>
 
                 </div>
-                <div className="w-1/5 mt-[120px]">
+                {!isQuickView && <div className="w-1/5 mt-[120px]">
                     {productExtraInfo.map(el => (
                         <ProductExtraInfoItem key={el.id} title={el.title} icon={el.icon} sub={el.sub} />
                     ))}
-                </div>
+                </div>}
             </div>
-            <div className="w-main m-auto mt-8 ">
-                <ProductInfo totalRatings={product?.ratingsProduct} reviews={product?.reviews} nameProduct={product?.titleProduct} productId={product?._id} rerender={rerender} />
-            </div>
-            <div className="w-main m-auto mt-8">
+            {!isQuickView && <div className="w-main m-auto mt-8 ">
+                <ProductInfo totalRatings={product?.ratingsProduct} description={product?.descriptionProduct} reviews={product?.reviews} nameProduct={product?.titleProduct} productId={product?._id} rerender={rerender} />
+            </div>}
+            {!isQuickView && <div className="w-main m-auto mt-8">
                 <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">OTHER CUSTOMERS ALSO BUY: </h3>
                 <CustomSlider normal={true} products={relatedProduct} />
-            </div>
-            <div className="w-full h-[100px]"></div>
+            </div>}
+            {!isQuickView && <div className="w-full h-[100px]"></div>}
         </div>
     )
 }

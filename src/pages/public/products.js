@@ -18,11 +18,12 @@ const Products = () => {
     const [activeClick, setActiveClick] = useState(null);
     const [params] = useSearchParams()
     const [sort, setSort] = useState('');
+    const { category } = useParams();
+
     const fetchProductsByCategory = async (queries) => {
-        const response = await apiGetProducts(queries);
+        const response = await apiGetProducts({ ...queries, category });
         if (response.success) setProducts(response)
     }
-    const { category } = useParams();
 
     useEffect(() => {
         let param = []
@@ -74,8 +75,8 @@ const Products = () => {
     }, [sort])
     return (
         <div className="w-full">
-            <div className="h-[81px] bg-gray-100 flex justify-center items-center">
-                <div className="w-main">
+            <div className="h-[51px] flex justify-center items-center bg-main">
+                <div className="w-main flex justify-between  text-white">
                     <h3 className="font-semibold uppercase">{category}</h3>
                     <BreadCrumb category={category} />
                 </div>

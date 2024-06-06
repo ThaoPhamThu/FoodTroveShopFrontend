@@ -1,18 +1,20 @@
 import { RiPhoneFill, RiTruckFill } from 'react-icons/ri';
 import { MdEmail, MdGroups } from 'react-icons/md';
 import { PiHandbagSimpleFill } from 'react-icons/pi';
-import { RiUserHeartLine, RiReplyFill, RiBillLine } from 'react-icons/ri';
+import { RiReplyFill, RiBillLine } from 'react-icons/ri';
 import { BiSolidHome } from "react-icons/bi";
 import { AiFillStar, AiOutlineStar, AiFillEye, AiOutlineLogout, AiOutlineDashboard } from "react-icons/ai";
 import { IoMenu, IoShieldHalfSharp } from "react-icons/io5";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
-import { FaTty } from "react-icons/fa6";
+import { FaTty, FaHeart, FaCartPlus } from "react-icons/fa6";
 import { GrProductHunt } from "react-icons/gr";
+import { FaUserAlt } from "react-icons/fa";
+import { BsCartCheckFill } from "react-icons/bs";
 const icons = {
     RiPhoneFill,
     MdEmail,
     PiHandbagSimpleFill,
-    RiUserHeartLine,
+    FaUserAlt,
     BiSolidHome,
     AiFillStar,
     AiOutlineStar,
@@ -28,7 +30,10 @@ const icons = {
     AiOutlineDashboard,
     MdGroups,
     GrProductHunt,
-    RiBillLine
+    RiBillLine,
+    FaHeart,
+    FaCartPlus,
+    BsCartCheckFill
 }
 
 export default icons;

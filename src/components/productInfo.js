@@ -8,8 +8,9 @@ import { showModal } from '../store/app/appSlice';
 import Swal from 'sweetalert2';
 import path from '../ultils/path';
 import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 
-const ProductInfo = ({ totalRatings, reviews, nameProduct, productId, rerender }) => {
+const ProductInfo = ({ totalRatings, reviews, nameProduct, productId, rerender, description }) => {
     const [activedTab, setActivedTab] = useState(1);
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -50,21 +51,12 @@ const ProductInfo = ({ totalRatings, reviews, nameProduct, productId, rerender }
     }
     return (
         <div className=''>
-            <div className='border'>
-                <div className='flex gap-6 border-b mt-6 mb-4 px-6'>
-                    {productInfoTabs.map(el => (
-                        <span
-                            className={`py-2 cursor-pointer ${activedTab === el.id ? 'text-main font-semibold border-b-[#64B496] border-b-2' : 'font-semibold'}`}
-                            key={el.id}
-                            onClick={() => setActivedTab(el.id)}
-                        >
-                            {el.name}
-                        </span>
-                    ))}
-
-                </div>
-                <div className='w-full px-6 pt-4 pb-8 text-[#7A7A7A] border-b'>
-                    {productInfoTabs.some(el => el.id === activedTab) && productInfoTabs.find(el => el.id === activedTab)?.content}
+            <div className='flex flex-col my-8 w-main border'>
+                <span className='py-2 px-6 cursor-pointer font-semibold bg-white border-b'>
+                    DESCRIPTION
+                </span>
+                <div className='w-full px-6 pt-4 pb-8 text-[#7A7A7A] border-b' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }}>
+                    {/* {description} */}
                 </div>
             </div>
 

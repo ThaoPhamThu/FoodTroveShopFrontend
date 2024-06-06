@@ -4,9 +4,9 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 
 const usePagination = (totalProduct, currentPage, siblingCount = 1) => {
     const pagiArr = useMemo(() => {
-        const pageSize = process.env.REACT_APP_PRODUCT_LIMIT || 10;
-        const paginationCount = Math.ceil(totalProduct / pageSize);
-        const totalPaginationItem = siblingCount + 5;
+        const pageSize = +process.env.REACT_APP_LIMIT || 10;
+        const paginationCount = Math.ceil(+totalProduct / pageSize);
+        const totalPaginationItem = +siblingCount + 5;
 
         if (paginationCount <= totalPaginationItem) return generateRange(1, paginationCount);
 

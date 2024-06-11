@@ -3,13 +3,34 @@ import logo from '../assets/logo.jpg';
 import icons from '../ultils/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import path from '../ultils/path';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getInforUser } from '../store/users/asyncActions';
+import { logout, clearMessage } from "../store/users/userSlice";
+import { RiLoginBoxFill } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 const { RiPhoneFill, MdEmail, PiHandbagSimpleFill, FaUserAlt } = icons
 const Header = () => {
-    const { current } = useSelector(state => state.user)
+    const { isLoggedIn, current, mes } = useSelector(state => state.user)
     const [isShowOption, setIsShowOption] = useState(false)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        const setTimeOutId = setTimeout(() => {
+            if (isLoggedIn) dispatch(getInforUser())
+        }, 300)
+        return () => {
+            clearTimeout(setTimeOutId)
+        }
+    }, [dispatch, isLoggedIn]);
+
+    useEffect(() => {
+        if (mes) Swal.fire('Oops!', mes, 'infor').then(() => {
+            dispatch(clearMessage())
+            navigate(`/${path.LOGIN}`)
+        })
+    }, [mes])
 
     useEffect(() => {
         const handleClickOut = (e) => {
@@ -42,35 +63,51 @@ const Header = () => {
                     </span>
                     <span>Online Support 24/7</span>
                 </div>
-                {current && <Fragment>
-                    <div onClick={() => navigate(`/${path.DETAIL_CART}`)} className="cursor-pointer flex flex-col items-center px-6 border-r gap-2">
-                        <PiHandbagSimpleFill color="red" />
-                        <span>{`${current?.cart?.length || 0} item(s)`}</span>
-                    </div>
-                    {current.role === 'user' && <Link className="flex flex-col cursor-pointer items-center justify-center px-6 gap-2"
-                        to={`/${path.MEMBER}/${path.PERSONAL}`}>
-                        <FaUserAlt color="red" />
-                        <span>Profile</span>
-                    </Link>}
-                    {current.role === 'admin' && <div
-                        className="cursor-pointer flex flex-col items-center justify-center pl-6 gap-2 relative"
-                        onClick={() => setIsShowOption(prev => !prev)}
-                        id="profile">
-                        <FaUserAlt color="red" />
-                        <span>Profile</span>
+                {isLoggedIn && current
+                    ? <Fragment>
+                        <div onClick={() => navigate(`/${path.DETAIL_CART}`)} className="cursor-pointer flex flex-col items-center px-6 border-r gap-2">
+                            <PiHandbagSimpleFill color="red" />
+                            <span>{`${current?.cart?.length || 0} item(s)`}</span>
+                        </div>
+                        {current.role === 'user' && <div
+                            className="cursor-pointer flex flex-col items-center justify-center pl-6 gap-2 relative"
+                            onClick={() => setIsShowOption(prev => !prev)}
+                            id="profile">
+                            <FaUserAlt color="red" />
+                            <span>{current?.name}</span>
 
-                        {isShowOption && <div onClick={(e) => e.stopPropagation()} className="absolute top-full flex flex-col left-[16px] min-w-[150px] bg-gray-100 border py-2">
-                            <Link
-                                className="p-2 w-full hover:bg-sky-100"
-                                to={`/${path.MEMBER}/${path.PERSONAL}`}>Personal
-                            </Link>
-                            <Link
-                                className="p-2 w-full hover:bg-sky-100"
-                                to={`/${path.ADMIN}/${path.DASHBOARD}`}>Admin Workspace
-                            </Link>
+                            {isShowOption && <div onClick={(e) => e.stopPropagation()} className="absolute top-full flex flex-col left-[16px] min-w-[150px] bg-gray-100 border py-2">
+                                <Link
+                                    className="p-2 w-full hover:bg-sky-100"
+                                    to={`/${path.MEMBER}/${path.PERSONAL}`}>Personal
+                                </Link>
+                                <span onClick={() => dispatch(logout())} className='p-2 w-full hover:bg-sky-100'>Log out</span>
+                            </div>}
                         </div>}
-                    </div>}
-                </Fragment>}
+                        {current.role === 'admin' && <div
+                            className="cursor-pointer flex flex-col items-center justify-center pl-6 gap-2 relative"
+                            onClick={() => setIsShowOption(prev => !prev)}
+                            id="profile">
+                            <FaUserAlt color="red" />
+                            <span>{current?.name}</span>
+
+                            {isShowOption && <div onClick={(e) => e.stopPropagation()} className="absolute top-full flex flex-col left-[16px] min-w-[150px] bg-gray-100 border py-2">
+                                <Link
+                                    className="p-2 w-full hover:bg-sky-100"
+                                    to={`/${path.MEMBER}/${path.PERSONAL}`}>Personal
+                                </Link>
+                                <Link
+                                    className="p-2 w-full hover:bg-sky-100"
+                                    to={`/${path.ADMIN}/${path.DASHBOARD}`}>Admin Workspace
+                                </Link>
+                                <span onClick={() => dispatch(logout())} className='p-2 w-full hover:bg-sky-100'>Log out</span>
+                            </div>}
+                        </div>}
+                    </Fragment>
+                    : <Link to={`/${path.LOGIN}`} className="cursor-pointer flex flex-col items-center justify-center pl-6 gap-2 relative">
+                        <RiLoginBoxFill color="red" />
+                        <span>Log in</span>
+                    </Link>}
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { BreadCrumb, CartItem } from '../../components';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -53,7 +53,7 @@ const DetailCart = () => {
                     <span className='text-main italic'>{`${formatMoney(currentCart?.reduce((sum, el) => (+el?.price * +el?.quantity) + sum, 0))} VNĐ`}</span>
                 </div>
                 <div className='flex justify-between'>
-                    <span onClick={() => navigate(`/`)} className='flex items-center justify-center font-medium text-xs text-gray-500 cursor-pointer underline underline-offset-2'>Continue Shopping</span>
+                    <span onClick={() => navigate(`/${path.PRODUCTS}`)} className='flex items-center justify-center font-medium text-xs text-gray-500 cursor-pointer underline underline-offset-2'>Continue Shopping</span>
                     <Link to={`/${path.CHECKOUT}`} className='flex w-[120px] h-[40px] bg-main rounded-md text-white items-center justify-center cursor-pointer'>Check Out</Link>
                 </div>
             </div>

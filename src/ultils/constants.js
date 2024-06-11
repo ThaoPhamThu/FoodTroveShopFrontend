@@ -19,8 +19,8 @@ export const navigation = [
     },
     {
         id: 4,
-        value: 'OUR SERVICE',
-        path: `/${path.OUR_SERVICE}`
+        value: 'ABOUT US',
+        path: `/${path.ABOUT_US}`
     },
     {
         id: 5,
@@ -168,7 +168,7 @@ export const ratings = [
     },
 ]
 
-const { AiOutlineDashboard, MdGroups, GrProductHunt, RiBillLine } = icons
+const { AiOutlineDashboard, MdGroups, GrProductHunt, RiBillLine, ImBlogger } = icons
 export const adminSidebar = [
     {
         id: 1,
@@ -180,18 +180,18 @@ export const adminSidebar = [
     {
         id: 2,
         type: 'SINGLE',
-        text: 'Manage users',
+        text: 'Manage Users',
         path: `/${path.ADMIN}/${path.MANAGE_USER}`,
         icon: <MdGroups size={20} />
     },
     {
         id: 3,
         type: 'PARENT',
-        text: 'Manage products',
+        text: 'Manage Products',
         icon: <GrProductHunt size={20} />,
         submenu: [
             {
-                text: 'Create product',
+                text: 'Create Product',
                 path: `/${path.ADMIN}/${path.CREATE_PRODUCT}`
             },
             {
@@ -203,9 +203,25 @@ export const adminSidebar = [
     {
         id: 4,
         type: 'SINGLE',
-        text: 'Manage orders',
+        text: 'Manage Orders',
         path: `/${path.ADMIN}/${path.MANAGE_ORDER}`,
         icon: <RiBillLine size={20} />
+    },
+    {
+        id: 5,
+        type: 'PARENT',
+        text: 'Manage Blogs',
+        icon: <ImBlogger size={20} />,
+        submenu: [
+            {
+                text: 'Create Blog',
+                path: `/${path.ADMIN}/${path.CREATE_BLOG}`
+            },
+            {
+                text: 'Manage Blogs',
+                path: `/${path.ADMIN}/${path.MANAGE_BLOGS}`
+            }
+        ]
     },
 
 ]
@@ -284,4 +300,42 @@ export const brandsProduct = [
         code: "Vinagarden",
         value: "Vinagarden",
     }
+]
+
+export const faqs = [
+    {
+        id: 1,
+        text: 'What Facilities Does Your Shop Have?',
+        subtext: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad voluptate doloribus eos sunt labore ea enim voluptatem, sequi voluptas rem doloremque architecto. Libero, vero natus.'
+    },
+    {
+        id: 2,
+        text: 'How Do I By A Products For My Meal?',
+        subtext: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad voluptate doloribus eos sunt labore ea enim voluptatem, sequi voluptas rem doloremque architecto. Libero, vero natus.'
+    },
+    {
+        id: 3,
+        text: 'Is There Any Benefits Center In Your Shop',
+        subtext: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad voluptate doloribus eos sunt labore ea enim voluptatem, sequi voluptas rem doloremque architecto. Libero, vero natus.'
+    },
+    {
+        id: 4,
+        text: 'When I Buy, Will I Get Free Shipping??',
+        subtext: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad voluptate doloribus eos sunt labore ea enim voluptatem, sequi voluptas rem doloremque architecto. Libero, vero natus.'
+    },
+    {
+        id: 5,
+        text: 'What Should I Do If I Want To Exchange Goods?',
+        subtext: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad voluptate doloribus eos sunt labore ea enim voluptatem, sequi voluptas rem doloremque architecto. Libero, vero natus.'
+    },
+    {
+        id: 6,
+        text: 'What Type Of Service Do You Offer?',
+        subtext: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad voluptate doloribus eos sunt labore ea enim voluptatem, sequi voluptas rem doloremque architecto. Libero, vero natus.'
+    },
+    {
+        id: 7,
+        text: 'How Do I By A Products For My Meal?',
+        subtext: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad voluptate doloribus eos sunt labore ea enim voluptatem, sequi voluptas rem doloremque architecto. Libero, vero natus.'
+    },
 ]

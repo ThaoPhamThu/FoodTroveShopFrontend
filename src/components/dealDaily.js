@@ -3,23 +3,31 @@ import icons from "../ultils/icons";
 import { apiGetProducts } from "../apis/product";
 import { renderStarFromNumber, formatMoney } from '../ultils/helper';
 import { CountDown } from './';
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import { getDealDaily } from "../store/products/productSlice";
+import { useNavigate } from "react-router-dom";
 
 const { AiFillStar, IoMenu } = icons;
 
 let idInterval
 
 const DealDaily = () => {
-    const [dealDaily, setDealDaily] = useState(null);
+    const { dealDaily } = useSelector(state => state.products)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [hour, setHour] = useState(0);
     const [minute, setMinute] = useState(0);
     const [second, setSecond] = useState(0);
     const [expireTime, setExpireTime] = useState(false);
 
+
     const fetchDealDaily = async () => {
-        const response = await apiGetProducts({ limit: 1, page: Math.round(Math.random() * 10), ratingsProduct: 5 });
+        const response = await apiGetProducts({ sort: '-ratingsProduct', limit: 20 });
         if (response.success) {
-            setDealDaily(response.products[0]);
-            const h = 24 - new Date().getHours();
+            const pr = response.products[Math.round(Math.random() * 20)]
+            dispatch(getDealDaily({ data: pr, time: Date.now() + 24 * 60 ^ 60 ^ 1000 }))
+            const h = 23 - new Date().getHours();
             const m = 60 - new Date().getMinutes();
             const s = 60 - new Date().getSeconds();
             setHour(h);
@@ -33,9 +41,8 @@ const DealDaily = () => {
     }
 
     useEffect(() => {
-        idInterval && clearInterval(idInterval);
         fetchDealDaily();
-    }, [expireTime]);
+    }, []);
 
     useEffect(() => {
         idInterval = setInterval(() => {
@@ -68,21 +75,30 @@ const DealDaily = () => {
                 <span className="flex-8 font-semibold text-[20px] flex justify-center text-gray-700">DEAL DAILY</span>
                 <span className="flex-1"></span>
             </div>
-            <div className="w-full flex flex-col items-center pt-8 gap-2 px-4">
-                <img src={dealDaily?.imagesProduct[0] || ''} alt="" className="w-full object-contain" />
-                <span className="text-center">{dealDaily?.titleProduct}</span>
-                <span className="flex">{renderStarFromNumber(dealDaily?.ratingsProduct, 20)?.map((el, index) => (
+            <div
+                className="w-full flex flex-col items-center pt-8 gap-2 px-4 cursor-pointer"
+                onClick={() => navigate(`/${dealDaily?.data?.category}/${dealDaily?.data?._id}/${dealDaily?.data?.titleProduct}`)}>
+                <img src={dealDaily?.data?.imagesProduct[0] || ''} alt="" className="w-full object-contain" />
+                <span className="text-center text-2xl">{dealDaily?.data?.titleProduct}</span>
+                <span className="flex">{renderStarFromNumber(dealDaily?.data?.ratingsProduct, 20)?.map((el, index) => (
                     <span key={index}>{el}</span>
                 ))}</span>
-                <span>{`${formatMoney(dealDaily?.price)} VNĐ`}</span>
+                {dealDaily?.data?.saleProduct
+                    ? <div className="flex flex-col gap-0 items-center">
+                        <span className=" text-xl font-medium text-main">{`${formatMoney(dealDaily?.data?.finalprice)} VNĐ`}</span>
+                        <del className="">{`${formatMoney(dealDaily?.data?.price)} VNĐ`}</del>
+                    </div>
+                    : <span className="text-xl font-medium text-main">{`${formatMoney(dealDaily?.data?.price)} VNĐ`}</span>
+                }
+
             </div>
-            <div className="px-4 mt-4 mb-8">
+            <div className="px-4 mt-6 ">
                 <div className="flex justify-center items-center gap-2 mb-4">
                     <CountDown unit={'Hours'} number={hour} />
                     <CountDown unit={'Minutes'} number={minute} />
                     <CountDown unit={'Seconds'} number={second} />
                 </div>
-                <button type="button" className="flex gap-2 items-center justify-center w-full bg-main hover:bg-gray-800 text-white font-medium py-2">
+                <button type="button" className="flex gap-2 mt-6 items-center justify-center w-full bg-main hover:bg-gray-800 text-white font-medium py-2">
                     <IoMenu />
                     <span>Options</span>
                 </button>

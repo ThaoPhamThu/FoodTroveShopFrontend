@@ -4,14 +4,15 @@ import { Link } from 'react-router-dom';
 import { IoIosArrowForward } from "react-icons/io";
 
 
-const BreadCrumb = ({ category }) => {
+const BreadCrumbBlog = ({ category }) => {
     const routes = [
-        { path: "/:category", breadcrumb: category },
+
+        { path: "/blogs", breadcrumb: "Blogs" },
         { path: "/", breadcrumb: "Home" },
+        { path: "/blogs/:category", breadcrumb: category },
 
     ]
     const breadcrumb = useBreadcrumbs(routes);
-    console.log(breadcrumb)
     return (
         <div className='text-sm flex items-center gap-1'>
             {breadcrumb?.filter(el => !el.match.route === false).map(({ match, breadcrumb }, index, self) => (
@@ -24,4 +25,4 @@ const BreadCrumb = ({ category }) => {
     )
 }
 
-export default memo(BreadCrumb)
+export default memo(BreadCrumbBlog)

@@ -1,10 +1,9 @@
 import React from "react";
-import { Sidebar, Banner, BestSeller, DealDaily, PopularProduct, CustomSlider, TopRatedProduct } from '../../components';
+import { Sidebar, Banner, BestSeller, DealDaily, TopSaleProduct, CustomSlider, TopRatedProduct, BlogHome } from '../../components';
 import { useSelector } from "react-redux";
 
 const Home = () => {
     const { newProducts } = useSelector(state => state.products);
-    const { isLoggedIn, current } = useSelector(state => state.products);
 
 
     return (
@@ -20,7 +19,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="my-8">
-                <PopularProduct />
+                <TopSaleProduct />
             </div>
             <div className="my-8 w-main">
                 <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">NEW ARRIVALS</h3>
@@ -32,7 +31,7 @@ const Home = () => {
                 <TopRatedProduct />
             </div>
             <div className="my-8 w-main">
-                <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">BLOGS POSTS</h3>
+                <BlogHome />
             </div>
         </>
     )

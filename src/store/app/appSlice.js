@@ -7,13 +7,13 @@ export const appSlice = createSlice({
         categories: null,
         isLoading: false,
         isShowModal: false,
-        modalChildren: null
+        modalChildren: null,
     },
     reducers: {
         showModal: (state, action) => {
             state.isShowModal = action.payload.isShowModal
             state.modalChildren = action.payload.modalChildren
-        }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(actions.getCategories.pending, (state) => {

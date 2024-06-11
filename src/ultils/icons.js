@@ -10,6 +10,7 @@ import { FaTty, FaHeart, FaCartPlus } from "react-icons/fa6";
 import { GrProductHunt } from "react-icons/gr";
 import { FaUserAlt } from "react-icons/fa";
 import { BsCartCheckFill } from "react-icons/bs";
+import { ImBlogger } from "react-icons/im";
 const icons = {
     RiPhoneFill,
     MdEmail,
@@ -33,7 +34,8 @@ const icons = {
     RiBillLine,
     FaHeart,
     FaCartPlus,
-    BsCartCheckFill
+    BsCartCheckFill,
+    ImBlogger
 }
 
 export default icons;

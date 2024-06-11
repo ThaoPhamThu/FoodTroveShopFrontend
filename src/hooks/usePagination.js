@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 import { generateRange } from '../ultils/helper';
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 
-const usePagination = (totalProduct, currentPage, siblingCount = 1) => {
+const usePagination = (totalProduct, currentPage, page, siblingCount = 1) => {
     const pagiArr = useMemo(() => {
-        const pageSize = +process.env.REACT_APP_LIMIT || 10;
+        const pageSize = +page || 8;
         const paginationCount = Math.ceil(+totalProduct / pageSize);
         const totalPaginationItem = +siblingCount + 5;
 

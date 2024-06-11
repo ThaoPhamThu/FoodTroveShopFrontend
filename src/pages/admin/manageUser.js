@@ -45,7 +45,6 @@ const ManageUser = () => {
 
     const handleUpdate = async (data) => {
         const response = await apiUpdateUser(data, editElm._id)
-        console.log(response)
         if (response.success) {
             setEditElm(null)
             render()

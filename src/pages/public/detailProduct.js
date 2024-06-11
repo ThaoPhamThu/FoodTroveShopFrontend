@@ -7,11 +7,12 @@ import { formatMoney, renderStarFromNumber } from '../../ultils/helper';
 import { productExtraInfo } from '../../ultils/constants';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from "react-redux";
-import { apiUpdateCart } from "../../apis";
+import { apiUpdateCart, apiUpdateWishlist } from "../../apis";
 import { toast } from "react-toastify";
 import { getInforUser } from "../../store/users/asyncActions";
 import Swal from "sweetalert2";
 import path from "../../ultils/path";
+import { FaRegHeart } from "react-icons/fa";
 
 const settings = {
     dots: false,
@@ -109,7 +110,14 @@ const DetailProduct = ({ isQuickView, data }) => {
         })
         const response = await apiUpdateCart({ pid, quantity })
         if (response.success) {
-            toast.success(response.mes)
+            dispatch(getInforUser())
+        }
+        else toast.error(response.mes)
+    }
+
+    const handleAddWishlist = async () => {
+        const response = await apiUpdateWishlist(product?._id)
+        if (response.success) {
             dispatch(getInforUser())
         }
         else toast.error(response.mes)
@@ -190,6 +198,10 @@ const DetailProduct = ({ isQuickView, data }) => {
                         <div className="flex gap-4 items-center">
                             <span className="font-medium">Quantity</span>
                             <SelectQuantity quantity={quantity} handleQuantity={handleQuantity} handleChangeQuantity={handleChangeQuantity} />
+                            <span
+                                className=" flex border w-10 h-10 cursor-pointer rounded-md items-center justify-center ml-10"
+                                title="Add to Wishlist" onClick={() => handleAddWishlist()}
+                            ><FaRegHeart color={current?.wishlist?.some(i => i._id === product?._id.toString()) ? 'red' : 'black'} /></span>
                         </div>
                         <Button handleOnClick={handleAddCart} fw>
                             Add to Cart

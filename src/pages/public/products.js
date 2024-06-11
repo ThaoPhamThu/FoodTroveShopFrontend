@@ -21,7 +21,8 @@ const Products = () => {
     const { category } = useParams();
 
     const fetchProductsByCategory = async (queries) => {
-        const response = await apiGetProducts({ ...queries, category });
+        if (category && category !== 'products') queries.category = category
+        const response = await apiGetProducts(queries);
         if (response.success) setProducts(response)
     }
 
@@ -77,7 +78,7 @@ const Products = () => {
         <div className="w-full">
             <div className="h-[51px] flex justify-center items-center bg-main">
                 <div className="w-main flex justify-between  text-white">
-                    <h3 className="font-semibold uppercase">{category}</h3>
+                    <h3 className="font-semibold capitalize">{category}</h3>
                     <BreadCrumb category={category} />
                 </div>
             </div>

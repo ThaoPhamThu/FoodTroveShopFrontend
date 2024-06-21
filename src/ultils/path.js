@@ -4,6 +4,8 @@ const path = {
     ALL: '*',
     LOGIN: 'login',
     REGISTER: 'register',
+    FINAL_REGISTER: 'finalregister/:status',
+    RESET_PASSWORD: 'reset-password/:token',
     PRODUCTS__CATEGORY: ':category',
     BLOGS__CATEGORY: 'blogs/:category',
     DETAIL_BLOG__CATEGORY__PID__TITLE: 'blogs/:category/:bid/:titleBlog',
@@ -30,7 +32,8 @@ const path = {
     PERSONAL: 'personal',
     MY_CART: 'my-cart',
     HISTORY: 'order-history',
-    WISHLIST: 'wishlist'
+    WISHLIST: 'wishlist',
+    RESET_PASS: 'resetpass',
 }
 
 export default path;

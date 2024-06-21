@@ -33,3 +33,8 @@ export const apiDeleteProduct = (pid) => axios({
     url: '/products/delete/' + pid,
     method: 'delete'
 });
+
+export const apiGetAllProducts = () => axios({
+    url: '/products/admin',
+    method: 'get'
+});

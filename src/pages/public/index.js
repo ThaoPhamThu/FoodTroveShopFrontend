@@ -6,7 +6,10 @@ export { default as Blogs } from './blogs';
 export { default as DetailProduct } from './detailProduct';
 export { default as Faq } from './faqs';
 export { default as AboutUs } from './aboutUs';
-export { default as Register } from './register';
 export { default as DetailCart } from './detailCart';
 export { default as DetailBlog } from './detailBlog';
 export { default as BlogCate } from './blogCate';
+export { default as FinalRegister } from './finalRegister';
+export { default as ResetPassword } from './resetPassword';
+
+

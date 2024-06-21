@@ -33,13 +33,15 @@ export { default as InputForm } from './inputForm';
 export { default as Select } from './select';
 export { default as MarkdownEditor } from './markdownEditor';
 export { default as MemberSidebar } from './memberSidebar';
-export { default as QuickView } from './quickView';
 export { default as Cart } from './cart';
 export { default as CartItem } from './cartItem';
 export { default as Paypal } from './paypal';
 export { default as BlogCard } from './blogCard';
 export { default as BlogHome } from './blogHome';
 export { default as Blog } from './blog';
-export { default as BlogCate } from './blogCate';
 export { default as BreadCrumbBlog } from './breadCrumbBlog';
+export { default as Congrat } from './congrat';
+export { default as CustomerSelect } from './customerSelect';
+export { default as Chart } from './chart';
+export { default as ChartIncome } from './chartIncome';
 

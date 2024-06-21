@@ -168,7 +168,7 @@ export const ratings = [
     },
 ]
 
-const { AiOutlineDashboard, MdGroups, GrProductHunt, RiBillLine, ImBlogger } = icons
+const { AiOutlineDashboard, MdGroups, GrProductHunt, RiBillLine, ImBlogger, FaFirstOrderAlt } = icons
 export const adminSidebar = [
     {
         id: 1,
@@ -246,7 +246,7 @@ export const memberSidebar = [
         type: 'SINGLE',
         text: 'Order histories',
         path: `/${path.MEMBER}/${path.HISTORY}`,
-        icon: <RiBillLine size={20} />
+        icon: <FaFirstOrderAlt size={20} />
     },
     {
         id: 4,
@@ -337,5 +337,35 @@ export const faqs = [
         id: 7,
         text: 'How Do I By A Products For My Meal?',
         subtext: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad voluptate doloribus eos sunt labore ea enim voluptatem, sequi voluptas rem doloremque architecto. Libero, vero natus.'
+    },
+]
+
+export const paymentMethod = [
+    {
+        code: "Cash On Delivery",
+        value: "Cash On Delivery"
+    },
+    {
+        code: "Payment By Paypal",
+        value: "Payment By Paypal"
+    },
+]
+
+export const statusOrder = [
+    {
+        code: "Processing",
+        value: "Processing"
+    },
+    {
+        code: "Processed-Delivered",
+        value: "Processed-Delivered"
+    },
+    {
+        code: "Successful Delivery",
+        value: "Successful Delivery"
+    },
+    {
+        code: "Cancelled",
+        value: "Cancelled"
     },
 ]

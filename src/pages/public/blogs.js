@@ -2,26 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate, createSearchParams, useLocation, NavLink } from "react-router-dom";
 import { apiGetBlogCategories, apiGetBlogs } from "../../apis/blog";
 import { Pagination, InputForm, BreadCrumbBlog } from "../../components";
-import Masonry from "react-masonry-css";
 import { useForm } from "react-hook-form";
-import path from "../../ultils/path";
 import useDebounce from "../../hooks/useDebounce";
 import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
-import { getNewBlogs } from "../../store/blogs/asyncActions";
-
-const breakpointColumnsObj = {
-    default: 3,
-    1100: 3,
-    700: 2,
-    500: 1
-};
 
 const Blogs = () => {
     const location = useLocation()
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const { newBlogs } = useSelector(state => state.blogs)
     const [blogs, setBlogs] = useState(null);
     const [categories, setCategories] = useState(null);
     const [params] = useSearchParams()
@@ -54,7 +41,6 @@ const Blogs = () => {
         const searchParams = Object.fromEntries([...params])
         fetchBlogs(searchParams)
         fetchBlogsCategory()
-        dispatch(getNewBlogs())
         window.scrollTo(0, 0)
     }, [params]);
     return (
@@ -134,29 +120,6 @@ const Blogs = () => {
                             </NavLink>
                         ))}
                     </div>
-                    {/* <div className="mt-4 flex flex-col gap-2">
-                        <span className="text-base font-medium">Recent Post</span>
-                        <div className="flex flex-col gap-4 border p-2">
-                            <img src={newBlogs[0]?.imageBlog} />
-                            <div className="flex flex-col items-center justify-center">
-                                <span className="text-[13px] font-normal text-main">{moment(newBlogs[0]?.createdAt).format('MMM DD, YYYY')}</span>
-                                <span className="text-sm font-bold text-center">{newBlogs[0]?.title}</span>
-                            </div>
-                        </div>
-                    </div> */}
-                    {/* <div className="mt-4 flex flex-col gap-2">
-                        <span className="text-base font-medium">Latest Gallery</span>
-                        <div className="flex gap-4">
-                            <Masonry
-                                breakpointCols={breakpointColumnsObj}
-                                className="my-masonry-grid flex mx-[-5px]"
-                                columnClassName="my-masonry-grid_column">
-                                {newBlogs?.map(el => (
-                                    <div className="px-1 "><img className="w-[64px] rounded-md h-[64px] object-cover" src={el?.imageBlog} /></div>
-                                ))}
-                            </Masonry>
-                        </div>
-                    </div> */}
                 </div>
             </div>
             <div className="h-[56px]"></div>

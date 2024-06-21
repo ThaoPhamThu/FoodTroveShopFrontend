@@ -24,7 +24,7 @@ const PagiItem = ({ children }) => {
         <button
             className={clsx('w-10 h-10 flex justify-center p-4 ', !Number(children) && 'items-start',
                 Number(children) && 'items-center hover:rounded-full hover:bg-gray-300', +params.get('page') === +children && 'rounded-full bg-gray-300',
-                ((!+params.get('page') === +children) && (+children === 1)) && 'rounded-full bg-gray-300')}
+                !+params.get('page') && (+children === 1) && 'rounded-full bg-gray-300')}
             onClick={handlePagination}
             type='button'
             disabled={!Number(children)}>

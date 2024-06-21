@@ -1,5 +1,4 @@
-import React, { memo, useState, useCallback } from 'react'
-import { productInfoTabs } from '../ultils/constants';
+import React, { memo, useState } from 'react'
 import { VoteBar, Button, Ratings, Comment } from './';
 import { renderStarFromNumber } from '../ultils/helper';
 import { apiCreateReview } from '../apis';

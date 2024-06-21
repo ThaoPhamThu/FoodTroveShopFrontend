@@ -4,7 +4,7 @@ import { Product } from '../../components'
 
 const Wishlist = () => {
     const { current } = useSelector(state => state.user)
-    console.log(current)
+
     return (
         <div className='w-full relative px-4'>
             <header className='py-4 border-b border-b-blue-200'>

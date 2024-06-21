@@ -6,9 +6,32 @@ export const apiRegister = (data) => axios({
     data
 });
 
+export const apiFinalRegister = (token) => axios({
+    url: '/users/finalregister/' + token,
+    method: 'put'
+});
+
 export const apiLogin = (data) => axios({
     url: '/users/login',
     method: 'post',
+    data
+});
+
+export const apiForgotPassword = (data) => axios({
+    url: '/users/forgotpassword',
+    method: 'post',
+    data
+});
+
+export const apiResetPassword = (data) => axios({
+    url: '/users/resetpassword',
+    method: 'put',
+    data
+});
+
+export const apiUpdatePassword = (data) => axios({
+    url: '/users/password-update',
+    method: 'put',
     data
 });
 
@@ -21,6 +44,11 @@ export const apiGetAllUsers = (params) => axios({
     url: '/users/admin',
     method: 'get',
     params
+});
+
+export const apiGetUsers = () => axios({
+    url: '/users/admin/all',
+    method: 'get',
 });
 
 export const apiUpdateUser = (data, uid) => axios({

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Login, Public, Home, Faq, Products, DetailProduct, AboutUs, Blogs, Register, DetailCart, BlogCate, DetailBlog } from './pages/public';
+import { Login, Public, Home, Faq, Products, DetailProduct, AboutUs, Blogs, DetailCart, BlogCate, DetailBlog, FinalRegister, ResetPassword } from './pages/public';
 import { AdminLayout, CreateBlog, CreateProduct, Dashboard, ManageBlogs, ManageOrder, ManageProducts, ManageUser } from './pages/admin';
 import { MemberLayout, Personal, History, Wishlist, Checkout } from './pages/member'
 import path from './ultils/path';
@@ -31,6 +31,9 @@ function App() {
           <Route path={path.BLOGS} element={<Blogs />} />
           <Route path={path.DETAIL_CART} element={<DetailCart />} />
           <Route path={path.CHECKOUT} element={<Checkout />} />
+          <Route path={path.LOGIN} element={<Login />} />
+          <Route path={path.FINAL_REGISTER} element={<FinalRegister />} />
+          <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
           <Route path={path.ALL} element={<Home />} />
         </Route>
         <Route path={path.ADMIN} element={<AdminLayout />}>
@@ -49,10 +52,11 @@ function App() {
           <Route path={path.HISTORY} element={<History />} />
           <Route path={path.WISHLIST} element={<Wishlist />} />
         </Route>
-        <Route path={path.LOGIN} element={<Login />} />
-        <Route path={path.REGISTER} element={<Register />} />
+
       </Routes>
-      <ToastContainer />
+      <ToastContainer autoClose={2000} hideProgressBar={true}>
+        { }
+      </ToastContainer>
     </div>
   );
 }

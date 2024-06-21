@@ -203,9 +203,13 @@ const DetailProduct = ({ isQuickView, data }) => {
                                 title="Add to Wishlist" onClick={() => handleAddWishlist()}
                             ><FaRegHeart color={current?.wishlist?.some(i => i._id === product?._id.toString()) ? 'red' : 'black'} /></span>
                         </div>
-                        <Button handleOnClick={handleAddCart} fw>
-                            Add to Cart
-                        </Button>
+                        {product?.stock === 0
+                            ? <div className="px-4 py-2 rounded-md text-white bg-gray-400 flex items-center justify-center text-semibold my-2 mt-4 w-fit">
+                                Out of stock
+                            </div>
+                            : <Button handleOnClick={handleAddCart} >
+                                Add to Cart
+                            </Button>}
                     </div>
 
                 </div>

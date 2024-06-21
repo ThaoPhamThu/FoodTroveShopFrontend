@@ -15,7 +15,7 @@ const ManageProducts = () => {
     const [params] = useSearchParams();
     const navigate = useNavigate();
     const location = useLocation();
-    const { register, formState: { errors }, handleSubmit, reset, watch } = useForm();
+    const { register, formState: { errors }, watch } = useForm();
     const [products, setProducts] = useState(null);
     const [counts, setCounts] = useState(0);
     const [editProduct, setEditProduct] = useState(null)

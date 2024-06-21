@@ -11,7 +11,7 @@ const BreadCrumb = ({ category }) => {
 
     ]
     const breadcrumb = useBreadcrumbs(routes);
-    console.log(breadcrumb)
+
     return (
         <div className='text-sm flex items-center gap-1'>
             {breadcrumb?.filter(el => !el.match.route === false).map(({ match, breadcrumb }, index, self) => (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import icons from "../ultils/icons";
 import { apiGetProducts } from "../apis/product";
-import { renderStarFromNumber, formatMoney } from '../ultils/helper';
+import { renderStarFromNumber, formatMoney, secondsToHms } from '../ultils/helper';
 import { CountDown } from './';
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -26,23 +26,24 @@ const DealDaily = () => {
         const response = await apiGetProducts({ sort: '-ratingsProduct', limit: 20 });
         if (response.success) {
             const pr = response.products[Math.round(Math.random() * 20)]
-            dispatch(getDealDaily({ data: pr, time: Date.now() + 24 * 60 ^ 60 ^ 1000 }))
-            const h = 23 - new Date().getHours();
-            const m = 60 - new Date().getMinutes();
-            const s = 60 - new Date().getSeconds();
-            setHour(h);
-            setMinute(m);
-            setSecond(s);
-        } else {
-            setHour(0);
-            setMinute(59);
-            setSecond(59);
+            dispatch(getDealDaily({ data: pr, time: Date.now() + 24 * 60 * 60 * 1000 }))
         }
     }
 
     useEffect(() => {
-        fetchDealDaily();
-    }, []);
+        if (dealDaily?.time) {
+            const dealtaTime = dealDaily.time - Date.now()
+            const number = secondsToHms(dealtaTime)
+            setHour(number.h)
+            setMinute(number.m)
+            setSecond(number.s)
+        }
+    })
+
+    useEffect(() => {
+        idInterval && clearInterval(idInterval)
+        if (moment(moment(dealDaily?.time).format('MM/DD/YYYY')).isBefore((moment()))) fetchDealDaily();
+    }, [expireTime]);
 
     useEffect(() => {
         idInterval = setInterval(() => {
@@ -77,7 +78,7 @@ const DealDaily = () => {
             </div>
             <div
                 className="w-full flex flex-col items-center pt-8 gap-2 px-4 cursor-pointer"
-                onClick={() => navigate(`/${dealDaily?.data?.category}/${dealDaily?.data?._id}/${dealDaily?.data?.titleProduct}`)}>
+                onClick={() => navigate(`/products/${dealDaily?.data?.category}/${dealDaily?.data?._id}/${dealDaily?.data?.titleProduct}`)}>
                 <img src={dealDaily?.data?.imagesProduct[0] || ''} alt="" className="w-full object-contain" />
                 <span className="text-center text-2xl">{dealDaily?.data?.titleProduct}</span>
                 <span className="flex">{renderStarFromNumber(dealDaily?.data?.ratingsProduct, 20)?.map((el, index) => (

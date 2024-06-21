@@ -5,7 +5,7 @@ import labelBlue from '../assets/labelBlue.png';
 import { renderStarFromNumber } from '../ultils/helper';
 import { SelectOption } from './';
 import icons from "../ultils/icons";
-import { Link, createSearchParams, useLocation, useNavigate } from "react-router-dom";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import path from "../ultils/path";
 import { useDispatch, useSelector } from "react-redux";
 import { showModal } from "../store/app/appSlice";

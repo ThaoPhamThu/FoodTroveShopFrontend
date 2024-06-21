@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { InputForm, Pagination } from '../../components';
 import { useForm } from 'react-hook-form';
-import { apiGetProducts, apiDeleteProduct } from '../../apis/product';
 import moment from 'moment';
 import { useSearchParams, createSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import useDebounce from '../../hooks/useDebounce';
-import { UpdateBlog, UpdateProduct } from './';
+import { UpdateBlog } from './';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { FaRegEdit } from "react-icons/fa";
